@@ -11,15 +11,15 @@
                             <form @submit.prevent="agendarMensagem">
                                 <div>
                                     <label>Número do WhatsApp:</label>
-                                    <input class="form-control" type="text" required />
+                                    <input v-model="numero" class="form-control" type="text" required />
                                 </div>
                                 <div class="mt-3">
                                     <label>Mensagem:</label>
-                                    <textarea class="form-control" required></textarea>
+                                    <textarea v-model="mensagem" class="form-control" required></textarea>
                                 </div>
                                 <div class="mt-3 mb-3">
                                     <label>Horário de Envio:</label>
-                                    <input class="form-control" type="datetime-local" required />
+                                    <input v-model="horarioEnvio" class="form-control" type="datetime-local" required />
                                 </div>
                                 <button class="btn btn-success mt-3" type="submit">Agendar</button>
                             </form>
@@ -32,12 +32,34 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { defineComponent, ref } from 'vue';
+import axios from 'axios';
 
-@Options({
-    components: {
+export default defineComponent({
+    setup() {
+        const numero = ref('')
+        const mensagem = ref('')
+        const horarioEnvio = ref('')
 
+        const agendarMensagem = async () => {
+            try {
+                await axios.post('http://localhost/Projetos/whats-scheduler/src/api/agendar_mensagem.php', {
+                    numero_whatsapp: numero.value,
+                    mensagem: mensagem.value,
+                    horario_envio: horarioEnvio.value,
+                })
+                alert('Mensagem agendada com sucesso!')
+            } catch (error) {
+                console.error('Erro ao agendar a mensagem:', error)
+            }
+        }
+
+        return {
+            numero,
+            mensagem,
+            horarioEnvio,
+            agendarMensagem,
+        }
     },
-})
-export default class WhatsScheduler extends Vue { }
+});
 </script>
