@@ -34,12 +34,10 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 
-function enviarMensagemWhatsApp($numero, $mensagem)
-{
-    // Substitua com suas credenciais Twilio
-    $sid = "AC89738024c4628ba3a596502f839e90a3";
-    $token = "68c76ccb823c06233085f2a0d59df247";
-    $twilio_number = "+5579991762846"; // Exemplo: +14155238886
+function enviarMensagemWhatsApp($numero, $mensagem) {
+    $sid = $_ENV['TWILIO_SID'];
+    $token = $_ENV['TWILIO_TOKEN'];
+    $twilio_number = $_ENV['TWILIO_WHATSAPP_NUMBER'];
     $client = new Client($sid, $token);
 
     try {

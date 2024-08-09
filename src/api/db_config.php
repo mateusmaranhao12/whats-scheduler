@@ -1,15 +1,24 @@
 <?php
-// db_config.php
+require 'vendor/autoload.php'; // Inclua o autoloader do Composer
 
-$servername = "localhost"; // Nome do servidor
-$username = "root";        // Nome de usuário do banco de dados
-$password = "";            // Senha do banco de dados
-$dbname = "whats_scheduler"; // Nome do banco de dados
+use Dotenv\Dotenv;
 
-// Criar conexão com o banco de dados
+// Carregar variáveis do arquivo .env
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+// Acessar variáveis de ambiente
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "whats_scheduler";
+
+$twilio_sid = $_ENV['TWILIO_SID'];
+$twilio_token = $_ENV['TWILIO_TOKEN'];
+$twilio_number = $_ENV['TWILIO_WHATSAPP_NUMBER'];
+
+// Conectar ao banco de dados
 $conn = new mysqli($servername, $username, $password, $dbname);
-
-// Verificar a conexão
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
